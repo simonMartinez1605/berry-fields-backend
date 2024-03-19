@@ -2,11 +2,10 @@ const sha = require('js-sha256');
 
 class SignatureEncypt  {
     constructor (){
-        this.signature = []; 
-        this.generate(); 
+      this.signature = [];  
     }
 
-    generate(ref,res){
+    async generate(ref,res){
         try {
             const dsData = ref;
             const number = Math.random() * 100000;

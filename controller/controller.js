@@ -1,10 +1,14 @@
-const berryServices  = require('../services/signatureServices'); 
+const berryServices = require('../services/signatureServices'); 
 const services = new berryServices(); 
 
-const newSignature =  (req, res)=>{
-    const signature = services.generate(req.body, res); 
+const newSignature = async (req, res)=>{
+    await services.generate(req.body, res); 
   
-    res.send(signature).status(201); 
+    res.status(201); 
+}
+
+const newBill = async ()=>{
+    
 }
 
 module.exports = {
