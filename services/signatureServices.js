@@ -1,21 +1,21 @@
 const sha = require('js-sha256'); 
 
 class SignatureEncypt  {
-    constructor (){
-      this.signature = [];  
-    }
+  constructor (){
+    this.signature = [];  
+  }
 
-    async generate(ref,res){
+  async generate(ref,res){
         try {
             const dsData = ref;
             const number = Math.random() * 100000;
-    
+          
             if(dsData.Berry == "Si"){ 
     
               //Datos obligatorios de wompi
               const key = process.env.KEY;
               const currency = "COP";
-              const reference = `bfs-${number}-${dsData.Fecha}-${dsData.ID}`;
+              const reference = `bfs-${number}-${dsData.Fecha}-${dsData.ID}`;   
               const amount = dsData.amount * 100;
               const params = reference + amount + currency + key;
           
@@ -35,6 +35,7 @@ class SignatureEncypt  {
           
               this.signature.push(data);
               res.send(data) 
+              console.log(data) 
             }
             else if(dsData.Hora1 == "Si"){
               //Datos obligatorios de wompi
@@ -60,13 +61,14 @@ class SignatureEncypt  {
           
               this.signature.push(data);
               res.send(data) 
+              console.log(data) 
             }
            
         
           } catch (error) {
           console.error(error);
         }
-    }
+  }
 }
 
 module.exports = SignatureEncypt; 

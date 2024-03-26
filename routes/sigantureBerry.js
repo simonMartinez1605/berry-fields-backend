@@ -6,5 +6,4 @@ const controller = require('../controller/controller');
  
 router.post('/',controller.newSignature); 
 
-
 module.exports = router; 
