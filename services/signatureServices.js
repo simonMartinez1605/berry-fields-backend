@@ -35,6 +35,7 @@ class SignatureEncypt {
         this.signature.push(data);
         res.send(data);
         console.log(data);
+        return data; 
       } else if (dsData.Hora1 == "Si") {
         //Datos obligatorios de wompi
         const key = process.env.KEY;
@@ -60,6 +61,7 @@ class SignatureEncypt {
         this.signature.push(data);
         res.send(data);
         console.log(data);
+        return data; 
       }
     } catch (error) {
       console.error(error);

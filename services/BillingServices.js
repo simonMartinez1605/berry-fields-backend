@@ -2,11 +2,6 @@ const assignChecksum = require("../routes/cheksum");
 const axios = require("axios");
 
 class ServicesBilling {
-  constructor() {
-    this.generate = [];
-  }
-
-  async generate() {}
 
   async billing(ref, res) {
     try {
@@ -58,6 +53,7 @@ class ServicesBilling {
               });
             }
           } catch (err) {
+            res.sendStatus(422); 
             console.error("Patch status faild", err);
           }
 
@@ -199,25 +195,21 @@ class ServicesBilling {
             }
           } else {
             console.log(response.data);
-            console.log("No Aproved");
-            res.sendStatus(500);
+            console.log(`Status is ${Status}`); 
+            res.sendStatus(422);
           }
         } else {
-          console.log("Ocurrio un problema de seguridad...");
+          console.log("A security problem occurred");
+          res.sendStatus(451); 
         }
-      } else if (referenceType.includes("1hr")) {
-        try {
-          console.log(response);
-
-          res.send(response);
-          return response;
-        } catch (err) {
-          console.error(err);
-          res.sendStatus(500);
-        }
+      }
+      else{
+        res.sendStatus(400); 
+        console.log('The reference does not correspond to berry') 
       }
     } catch (error) {
       console.error(error);
+      res.sendStatus(500); 
     }
   }
 }
