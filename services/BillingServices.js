@@ -2,7 +2,6 @@ const assignChecksum = require("../routes/cheksum");
 const axios = require("axios");
 
 class ServicesBilling {
-
   async billing(ref, res) {
     try {
       let wompi = [];
@@ -53,7 +52,7 @@ class ServicesBilling {
               });
             }
           } catch (err) {
-            res.sendStatus(422); 
+            res.sendStatus(422);
             console.error("Patch status faild", err);
           }
 
@@ -179,15 +178,17 @@ class ServicesBilling {
               };
               //Creacion de la factura
               console.log(factura);
-              // await axios
-              //   .post(URL_FACTURACION, factura)
-              //   .then((respuesta) => {
-              //     console.log("La Factura fue creada correctamente", respuesta.status);
-              //     res.send(respuesta.status);
-              //   })
-              //   .catch((error) => {
-              //     console.error(error);
-              //   });
+              await axios
+                .post(URL_FACTURACION, factura)
+                .then((respuesta) => {
+                  console.log(
+                    "La Factura fue creada correctamente",
+                    respuesta.status
+                  );
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
               res.sendStatus(201);
               return factura;
             } else {
@@ -195,21 +196,20 @@ class ServicesBilling {
             }
           } else {
             console.log(response.data);
-            console.log(`Status is ${Status}`); 
+            console.log(`Status is ${Status}`);
             res.sendStatus(422);
           }
         } else {
           console.log("A security problem occurred");
-          res.sendStatus(451); 
+          res.sendStatus(451);
         }
-      }
-      else{
-        res.sendStatus(400); 
-        console.log('The reference does not correspond to berry') 
+      } else {
+        res.sendStatus(400);
+        console.log("The reference does not correspond to berry");
       }
     } catch (error) {
       console.error(error);
-      res.sendStatus(500); 
+      res.sendStatus(500);
     }
   }
 }
