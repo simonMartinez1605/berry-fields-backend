@@ -4,12 +4,12 @@ const signatureBerry = require("./sigantureBerry");
 const facturacionBerry = require("./facturacion");
 
 function routerApi(app) {
-  const router = express.Router();
+  // const router = express.Router();
 
-  app.use("/api/v1", router);
+  // app.use("/api/v1", router);
 
-  router.use("/api/Signature", signatureBerry);
-  router.use("/api/res/nidum", facturacionBerry);
+  app.use("/api/Signature", signatureBerry);
+  app.use("/api/res/nidum", facturacionBerry);
 }
 
 module.exports = routerApi;

@@ -133,7 +133,7 @@ class ServicesBilling {
 
                   let price_product = (datos.price * datos.quantity) / grams;
                   let total = price_product * grams;
-
+  
                   const product = {
                     Producto: grams_id,
                     Cantidad: grams,
@@ -144,9 +144,9 @@ class ServicesBilling {
                     Cargo_por_venta: 0,
                     Asesor: "1889220000132110360",
                   };
-
-                  Product.push(product);
-                }
+  
+                Product.push(product);
+              }
               });
 
               // Informar Creación de factura
