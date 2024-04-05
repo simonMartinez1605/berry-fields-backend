@@ -4,9 +4,6 @@ const boom  = require("@hapi/boom");
 const servicesSignature = new berryServices();
 const billing = new ServicesBilling();
 
-const validatorHanlder = require('..//middlewares/validator.handler'); 
-const schema = require('../schema/signature.schemas'); 
-
 const newSignature = 
   async (req, res) => {
 
