@@ -1,9 +1,8 @@
 const assignChecksum = require("../routes/cheksum");
 const axios = require("axios");
 const boom = require('@hapi/boom'); 
-
 class ServicesBilling {
-  async billing(ref, res, next) {
+  async billing(ref, res) {
     try {
       let wompi = [];
 
@@ -55,8 +54,7 @@ class ServicesBilling {
           } catch (err) {
             res.sendStatus(422);
             console.error("Patch status faild", err);
-            next(err)
-            throw boom.badData(`Status: ${Status}`); 
+            // throw boom.badData(`Status: ${Status}`); 
           }
 
           if (response.data.transaction.status === "APPROVED") {
@@ -77,7 +75,6 @@ class ServicesBilling {
               .catch((error) => {
               console.error(error); 
               res.status(422); 
-              next(error)
               throw boom.badGateway
             });
 
@@ -185,21 +182,20 @@ class ServicesBilling {
                 Item: Product,
               };
               //Creacion de la factura
-              console.log(factura);
-              await axios 
-                .post(URL_FACTURACION, factura) 
-                .then((respuesta) => {
-                  console.log(
-                    "La Factura fue creada correctamente",
-                    respuesta.status
-                  );
-                })
-                .catch((error) => {
-                  console.error(error);
-                   res.status(422); 
-                   next(error)
-                  throw boom.badGateway("The billing isn't created"); 
-                });
+              console.log(factura, referenceType); 
+              // await axios 
+              //   .post(URL_FACTURACION, factura) 
+              //   .then((respuesta) => {
+              //     console.log(
+              //       "La Factura fue creada correctamente",
+              //       respuesta.status
+              //     );
+              //   })
+              //   .catch((error) => {
+              //     console.error(error);
+              //      res.status(422); 
+              //     throw boom.badGateway("The billing isn't created"); 
+              //   });
               res.sendStatus(201);
               return factura;
             } else {
@@ -225,8 +221,7 @@ class ServicesBilling {
       }
     } catch (error) {
       console.error(error);
-      next(error)
-      // res.sendStatus(500);
+      res.sendStatus(500); 
       // throw boom.badImplementation("Internal Error"); 
       
     }
