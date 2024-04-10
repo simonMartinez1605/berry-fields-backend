@@ -1,6 +1,6 @@
 const assignChecksum = require("../routes/cheksum");
 const axios = require("axios");
-
+const boom = require('@hapi/boom'); 
 class ServicesBilling {
   async billing(ref, res) {
     try {
@@ -54,6 +54,7 @@ class ServicesBilling {
           } catch (err) {
             res.sendStatus(422);
             console.error("Patch status faild", err);
+            // throw boom.badData(`Status: ${Status}`); 
           }
 
           if (response.data.transaction.status === "APPROVED") {
@@ -71,7 +72,11 @@ class ServicesBilling {
               .then((res) => {
                 DataBerry = res.data;
               })
-              .catch((error) => console.error(error));
+              .catch((error) => {
+              console.error(error); 
+              res.status(422); 
+              throw boom.badGateway
+            });
 
             let Product = [];
             let productos = [];
@@ -133,7 +138,7 @@ class ServicesBilling {
 
                   let price_product = (datos.price * datos.quantity) / grams;
                   let total = price_product * grams;
-
+  
                   const product = {
                     Producto: grams_id,
                     Cantidad: grams,
@@ -144,9 +149,9 @@ class ServicesBilling {
                     Cargo_por_venta: 0,
                     Asesor: "1889220000132110360",
                   };
-
-                  Product.push(product);
-                }
+  
+                Product.push(product);
+              }
               });
 
               // Informar Creación de factura
@@ -177,39 +182,48 @@ class ServicesBilling {
                 Item: Product,
               };
               //Creacion de la factura
-              console.log(factura);
-              await axios
-                .post(URL_FACTURACION, factura)
-                .then((respuesta) => {
-                  console.log(
-                    "La Factura fue creada correctamente",
-                    respuesta.status
-                  );
-                })
-                .catch((error) => {
-                  console.error(error);
-                });
+              console.log(factura, referenceType); 
+              // await axios 
+              //   .post(URL_FACTURACION, factura) 
+              //   .then((respuesta) => {
+              //     console.log(
+              //       "La Factura fue creada correctamente",
+              //       respuesta.status
+              //     );
+              //   })
+              //   .catch((error) => {
+              //     console.error(error);
+              //      res.status(422); 
+              //     throw boom.badGateway("The billing isn't created"); 
+              //   });
               res.sendStatus(201);
               return factura;
             } else {
               console.log("This invoice isn't berry fields order");
+              res.sendStatus(422); 
+              throw boom.badData("This invoice isn't berry fields order");  
             }
           } else {
             console.log(response.data);
             console.log(`Status is ${Status}`);
-            res.sendStatus(422);
+            res.status(422);
+            throw boom.badData(`Status is ${Status}`);  
           }
         } else {
           console.log("A security problem occurred");
           res.sendStatus(451);
+          throw boom.illegal("A security problem occurred")
         }
       } else {
         res.sendStatus(400);
         console.log("The reference does not correspond to berry");
+        throw  boom.boomify(("The reference does not correspond to berry")); 
       }
     } catch (error) {
       console.error(error);
-      res.sendStatus(500);
+      res.sendStatus(500); 
+      // throw boom.badImplementation("Internal Error"); 
+      
     }
   }
 }
