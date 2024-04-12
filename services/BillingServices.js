@@ -27,6 +27,8 @@ class ServicesBilling {
 
         console.log(JSON.stringify(response));
 
+        console.log(checksum); 
+
         //Validacion para facturacion
         if (response.signature.checksum === checksum) {
           const Status = response.data.transaction.status;
@@ -34,7 +36,7 @@ class ServicesBilling {
             const Ref = response.data.transaction.reference;
 
             const URL_BERRY_GET = `https://nexyapp-f3a65a020e2a.herokuapp.com/zoho/v1/console/verificar_pedido_Report?where=Referencia=="${Ref}"`;
-
+ 
             var Pedido = [];
 
             await axios.get(URL_BERRY_GET).then((res) => {
@@ -58,7 +60,7 @@ class ServicesBilling {
           }
 
           if (response.data.transaction.status === "APPROVED") {
-            const Ref = response.data.transaction.reference;
+            const Ref = response.data.transaction.reference; 
 
             //URL para la busqueda de los productos en zoho
             const URL_BERRY_GET = `https://nexyapp-f3a65a020e2a.herokuapp.com/zoho/v1/console/verificar_pedido_Report?where=Referencia=="${Ref}"`;
